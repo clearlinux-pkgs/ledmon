@@ -4,7 +4,7 @@
 #
 Name     : ledmon
 Version  : 0.96
-Release  : 7
+Release  : 8
 URL      : https://github.com/intel/ledmon/archive/v0.96/ledmon-0.96.tar.gz
 Source0  : https://github.com/intel/ledmon/archive/v0.96/ledmon-0.96.tar.gz
 Summary  : No detailed summary available
