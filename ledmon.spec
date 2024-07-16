@@ -6,17 +6,19 @@
 # autospec commit: b858a2a
 #
 Name     : ledmon
-Version  : 0.97
-Release  : 10
-URL      : https://github.com/intel/ledmon/archive/v0.97/ledmon-0.97.tar.gz
-Source0  : https://github.com/intel/ledmon/archive/v0.97/ledmon-0.97.tar.gz
-Summary  : No detailed summary available
+Version  : 1.0.0
+Release  : 11
+URL      : https://github.com/intel/ledmon/archive/v1.0.0/ledmon-1.0.0.tar.gz
+Source0  : https://github.com/intel/ledmon/archive/v1.0.0/ledmon-1.0.0.tar.gz
+Summary  : LED library
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: ledmon-bin = %{version}-%{release}
 Requires: ledmon-license = %{version}-%{release}
 Requires: ledmon-man = %{version}-%{release}
 BuildRequires : autoconf-archive-dev
+BuildRequires : file
+BuildRequires : pkgconfig(check)
 BuildRequires : pkgconfig(libpci)
 BuildRequires : pkgconfig(libudev)
 BuildRequires : sg3_utils-dev
@@ -25,10 +27,10 @@ BuildRequires : sg3_utils-dev
 %define debug_package %{nil}
 
 %description
-# This package contains the Enclosure LED Utilities, version 0.97
-All files in this package can be freely distributed and used according
-to the terms of the GNU General Public License, version 2.
-See http://www.gnu.org/ for details.
+# This package contains the Enclosure LED Utilities, version 1.0.0
+Files in this package can be freely distributed and used according
+to the terms of the GNU General Public License, version 2 or the
+GNU Lesser General Public License version 2.1 or later depending on file.
 
 %package bin
 Summary: bin components for the ledmon package.
@@ -65,13 +67,13 @@ man components for the ledmon package.
 
 
 %prep
-%setup -q -n ledmon-0.97
-cd %{_builddir}/ledmon-0.97
+%setup -q -n ledmon-1.0.0
+cd %{_builddir}/ledmon-1.0.0
 pushd ..
-cp -a ledmon-0.97 buildavx2
+cp -a ledmon-1.0.0 buildavx2
 popd
 pushd ..
-cp -a ledmon-0.97 buildapx
+cp -a ledmon-1.0.0 buildapx
 popd
 
 %build
@@ -79,7 +81,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1721145894
+export SOURCE_DATE_EPOCH=1721146302
 export GCC_IGNORE_WERROR=1
 CLEAR_INTERMEDIATE_CFLAGS="$CLEAR_INTERMEDIATE_CFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 CLEAR_INTERMEDIATE_FCFLAGS="$CLEAR_INTERMEDIATE_FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
@@ -138,7 +140,7 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1721145894
+export SOURCE_DATE_EPOCH=1721146302
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/ledmon
 cp %{_builddir}/ledmon-%{version}/COPYING %{buildroot}/usr/share/package-licenses/ledmon/74a8a6531a42e124df07ab5599aad63870fa0bd4 || :
