@@ -7,13 +7,14 @@
 #
 Name     : ledmon
 Version  : 1.0.0
-Release  : 11
+Release  : 12
 URL      : https://github.com/intel/ledmon/archive/v1.0.0/ledmon-1.0.0.tar.gz
 Source0  : https://github.com/intel/ledmon/archive/v1.0.0/ledmon-1.0.0.tar.gz
 Summary  : LED library
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: ledmon-bin = %{version}-%{release}
+Requires: ledmon-lib = %{version}-%{release}
 Requires: ledmon-license = %{version}-%{release}
 Requires: ledmon-man = %{version}-%{release}
 BuildRequires : autoconf-archive-dev
@@ -41,6 +42,18 @@ Requires: ledmon-license = %{version}-%{release}
 bin components for the ledmon package.
 
 
+%package dev
+Summary: dev components for the ledmon package.
+Group: Development
+Requires: ledmon-lib = %{version}-%{release}
+Requires: ledmon-bin = %{version}-%{release}
+Provides: ledmon-devel = %{version}-%{release}
+Requires: ledmon = %{version}-%{release}
+
+%description dev
+dev components for the ledmon package.
+
+
 %package doc
 Summary: doc components for the ledmon package.
 Group: Documentation
@@ -48,6 +61,15 @@ Requires: ledmon-man = %{version}-%{release}
 
 %description doc
 doc components for the ledmon package.
+
+
+%package lib
+Summary: lib components for the ledmon package.
+Group: Libraries
+Requires: ledmon-license = %{version}-%{release}
+
+%description lib
+lib components for the ledmon package.
 
 
 %package license
@@ -81,7 +103,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1721146302
+export SOURCE_DATE_EPOCH=1721146888
 export GCC_IGNORE_WERROR=1
 CLEAR_INTERMEDIATE_CFLAGS="$CLEAR_INTERMEDIATE_CFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 CLEAR_INTERMEDIATE_FCFLAGS="$CLEAR_INTERMEDIATE_FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
@@ -94,7 +116,7 @@ FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
 export GOAMD64=v2
-%autogen --disable-static
+%autogen --disable-static --enable-library
 make  %{?_smp_mflags}
 
 pushd ../buildavx2/
@@ -104,7 +126,7 @@ CXXFLAGS="$CLEAR_INTERMEDIATE_CXXFLAGS -march=x86-64-v3 -Wl,-z,x86-64-v3 "
 FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS -march=x86-64-v3 -Wl,-z,x86-64-v3 "
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS -march=x86-64-v3 "
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS -march=x86-64-v3 "
-%autogen --disable-static
+%autogen --disable-static --enable-library
 make  %{?_smp_mflags}
 popd
 pushd ../buildapx/
@@ -114,7 +136,7 @@ CXXFLAGS="$CLEAR_INTERMEDIATE_CXXFLAGS -march=x86-64-v3 -Wl,-z,x86-64-v3 "
 FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS -march=x86-64-v3 -mapxf -mavx10.1 -Wl,-z,x86-64-v3 "
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS -march=x86-64-v3 -mapxf -mavx10.1 "
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS -march=x86-64-v3 "
-%autogen --host=x86_64-clr-linux-gnu --disable-static
+%autogen --host=x86_64-clr-linux-gnu --disable-static --enable-library
 make  %{?_smp_mflags}
 popd
 %check
@@ -140,7 +162,7 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1721146302
+export SOURCE_DATE_EPOCH=1721146888
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/ledmon
 cp %{_builddir}/ledmon-%{version}/COPYING %{buildroot}/usr/share/package-licenses/ledmon/74a8a6531a42e124df07ab5599aad63870fa0bd4 || :
@@ -171,9 +193,22 @@ GOAMD64=v2
 /usr/bin/ledctl
 /usr/bin/ledmon
 
+%files dev
+%defattr(-,root,root,-)
+/usr/include/led/libled.h
+/usr/lib64/libled.so
+/usr/lib64/pkgconfig/ledmon.pc
+
 %files doc
 %defattr(0644,root,root,0755)
 /usr/share/doc/ledmon/*
+
+%files lib
+%defattr(-,root,root,-)
+/V3/usr/lib64/libled.so.1.0.0
+/VA/usr/lib64/libled.so.1.0.0
+/usr/lib64/libled.so.1
+/usr/lib64/libled.so.1.0.0
 
 %files license
 %defattr(0644,root,root,0755)
